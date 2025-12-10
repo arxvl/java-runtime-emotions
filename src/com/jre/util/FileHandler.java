@@ -5,7 +5,6 @@
 package com.jre.util;
 
 import com.jre.model.MoodLog;
-import com.jre.model.Task;
 import com.jre.model.User;
 import java.io.*;
 import java.nio.file.Files;
@@ -18,7 +17,6 @@ public class FileHandler {
     private static final String DATA_DIR = "data";
     private static final String USER_FILE = DATA_DIR + "/user_profile.txt";
     private static final String MOOD_FILE = DATA_DIR + "/mood_logs.txt";
-    private static final String TASK_FILE = DATA_DIR + "/tasks.txt";
 
     public FileHandler() {
         initializeDataDirectory();
@@ -117,63 +115,12 @@ public class FileHandler {
         }
     }
 
-    // ==================== TASK OPERATIONS ====================
-
-    public void saveTasks(List<Task> tasks) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TASK_FILE))) {
-            for (Task task : tasks) {
-                writer.write(task.toFileString());
-                writer.newLine();
-            }
-            System.out.println(tasks.size() + " task(s) saved successfully.");
-        } catch (IOException e) {
-            System.err.println("Error saving tasks: " + e.getMessage());
-        }
-    }
-
-    public List<Task> loadTasks() {
-        List<Task> tasks = new ArrayList<>();
-        File file = new File(TASK_FILE);
-        
-        if (!file.exists()) {
-            return tasks;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(TASK_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.trim().isEmpty()) {
-                    try {
-                        Task task = Task.fromFileStringFixed(line);
-                        tasks.add(task);
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Skipping invalid task entry: " + e.getMessage());
-                    }
-                }
-            }
-            System.out.println(tasks.size() + " task(s) loaded successfully.");
-        } catch (IOException e) {
-            System.err.println("Error loading tasks: " + e.getMessage());
-        }
-        return tasks;
-    }
-
-    public void appendTask(Task task) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TASK_FILE, true))) {
-            writer.write(task.toFileString());
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println("Error appending task: " + e.getMessage());
-        }
-    }
-
     // ==================== BACKUP OPERATIONS ====================
 
     public void createBackup() {
         try {
             backupFile(USER_FILE);
             backupFile(MOOD_FILE);
-            backupFile(TASK_FILE);
             System.out.println("Backup created successfully.");
         } catch (IOException e) {
             System.err.println("Error creating backup: " + e.getMessage());
@@ -199,7 +146,6 @@ public class FileHandler {
         try {
             Files.deleteIfExists(Paths.get(USER_FILE));
             Files.deleteIfExists(Paths.get(MOOD_FILE));
-            Files.deleteIfExists(Paths.get(TASK_FILE));
             System.out.println("All data deleted successfully.");
         } catch (IOException e) {
             System.err.println("Error deleting data: " + e.getMessage());

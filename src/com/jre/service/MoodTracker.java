@@ -1,7 +1,3 @@
-/**
- * MoodTracker.java
- * Manages collection of mood logs and provides analysis
- */
 package com.jre.service;
 
 import com.jre.model.MoodLog;
@@ -32,92 +28,26 @@ public class MoodTracker {
     public List<MoodLog> getLogsInRange(LocalDateTime from, LocalDateTime to) {
         return moodLogs.stream()
                 .filter(log -> !log.getDate().isBefore(from) && !log.getDate().isAfter(to))
+                .sorted((a, b) -> a.getDate().compareTo(b.getDate())) 
                 .collect(Collectors.toList());
-    }
-
-    public double calculateAverageMood() {
-        if (moodLogs.isEmpty()) {
-            return 0.0;
-        }
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getMoodLevel)
-                .average()
-                .orElse(0.0);
-    }
-
-    public double calculateAverageStress() {
-        if (moodLogs.isEmpty()) {
-            return 0.0;
-        }
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getStressLevel)
-                .average()
-                .orElse(0.0);
     }
 
     public double calculateAverageMoodInRange(LocalDateTime from, LocalDateTime to) {
         List<MoodLog> logsInRange = getLogsInRange(from, to);
-        if (logsInRange.isEmpty()) {
-            return 0.0;
-        }
-        return logsInRange.stream()
-                .mapToInt(MoodLog::getMoodLevel)
-                .average()
-                .orElse(0.0);
+        if (logsInRange.isEmpty()) return 0.0;
+        return logsInRange.stream().mapToInt(MoodLog::getMoodLevel).average().orElse(0.0);
     }
 
     public double calculateAverageStressInRange(LocalDateTime from, LocalDateTime to) {
         List<MoodLog> logsInRange = getLogsInRange(from, to);
-        if (logsInRange.isEmpty()) {
-            return 0.0;
-        }
-        return logsInRange.stream()
-                .mapToInt(MoodLog::getStressLevel)
-                .average()
-                .orElse(0.0);
-    }
-
-    public int getHighestMood() {
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getMoodLevel)
-                .max()
-                .orElse(0);
-    }
-
-    public int getLowestMood() {
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getMoodLevel)
-                .min()
-                .orElse(0);
-    }
-
-    public int getHighestStress() {
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getStressLevel)
-                .max()
-                .orElse(0);
-    }
-
-    public int getLowestStress() {
-        return moodLogs.stream()
-                .mapToInt(MoodLog::getStressLevel)
-                .min()
-                .orElse(0);
-    }
-
-    public MoodLog getLatestLog() {
-        if (moodLogs.isEmpty()) {
-            return null;
-        }
-        return moodLogs.stream()
-                .max((log1, log2) -> log1.getDate().compareTo(log2.getDate()))
-                .orElse(null);
+        if (logsInRange.isEmpty()) return 0.0;
+        return logsInRange.stream().mapToInt(MoodLog::getStressLevel).average().orElse(0.0);
     }
 
     public List<MoodLog> getRecentLogs(int count) {
         return moodLogs.stream()
-                .sorted((log1, log2) -> log2.getDate().compareTo(log1.getDate()))
-                .limit(count)
+                .sorted((a, b) -> a.getDate().compareTo(b.getDate())) 
+                .skip(Math.max(0, moodLogs.size() - count))
                 .collect(Collectors.toList());
     }
 
