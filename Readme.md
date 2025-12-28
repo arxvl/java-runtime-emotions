@@ -107,21 +107,10 @@ jre/
    - Add optional notes
    - Click "Save Entry"
 
-2. **Manage Tasks:**
-   - Select "Manage Academic Tasks"
-   - Fill in task details
-   - Set priority and due date
-   - Click "Add Task"
-
-3. **View Reports:**
+2. **View Reports:**
    - Select "View Weekly Report"
    - Review your weekly statistics
    - Export report if needed
-
-4. **Check Burnout Risk:**
-   - Select "Check Burnout Risk"
-   - Review detailed analysis
-   - Follow recommendations
 
 ---
 
@@ -142,8 +131,6 @@ Delete all files in the `data` folder
 
 **User Profile Management**
 **Daily Mood & Stress Tracking**
-**Academic Task Management**
-**Burnout Risk Detection**
 **Weekly Summary Reports**
 **Data Persistence (Text Files)**
 **Interactive Swing GUI**
