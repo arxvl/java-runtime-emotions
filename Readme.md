@@ -15,7 +15,6 @@ jre/
 │           │   └── Task.java
 │           ├── service/
 │           │   ├── MoodTracker.java
-│           │   ├── WorkloadManager.java
 │           │   ├── BurnoutAnalyzer.java
 │           │   └── ReportGenerator.java
 │           ├── util/
